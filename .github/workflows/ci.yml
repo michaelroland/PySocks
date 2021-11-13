@@ -1,0 +1,75 @@
+name: CI
+
+on: [push, pull_request]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3"
+      - name: Check packages
+        run: |
+          python3 -m pip install build twine;
+          python3 -m build;
+          python3 -m twine check dist/*
+
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3"
+
+      - name: Install Dependencies
+        run: python -m pip install --upgrade nox
+
+      - name: Run Lint
+        run: |
+          nox -s lint
+
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["2.7", "3.5", "3.6", "3.7", "3.8", "3.9"]
+        os: [windows-latest, ubuntu-latest]
+
+    runs-on: ${{ matrix.os }}
+    name: ${{ fromJson('{"windows-latest":"Windows","ubuntu-latest":"Ubuntu"}')[matrix.os] }} ${{ matrix.python-version }}
+    timeout-minutes: 20
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Python - ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Set Up Python 3 to run nox on Python 2
+        if: matrix.python-version == '2.7'
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3"
+
+      - name: Install Dependencies
+        run: python -m pip install --upgrade nox
+
+      - name: Run Tests
+        run: nox -s test-${{ matrix.python-version }}

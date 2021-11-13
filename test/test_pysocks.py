@@ -23,7 +23,7 @@ from test.util import wait_for_socket
 TEST_SERVER_HOST = 'localhost'
 TEST_SERVER_HOST_IP = '127.0.0.1'
 TEST_SERVER_PORT = 7777
-PROXY_HOST_IP = '127.0.0.2'
+PROXY_HOST_IP = '127.0.0.1'
 HTTP_PROXY_PORT = 7776
 SOCKS4_PROXY_PORT = 7775
 SOCKS5_PROXY_PORT = 7774
@@ -32,15 +32,15 @@ NON_ROUTABLE_IP = '10.0.0.0'
 
 
 def proxy_thread():
-    with open('3proxy.conf', 'w') as out:
-        out.write('\n'.join((
-            'allow *',
-            'auth none',
-            'proxy -a -n -p%d -e%s' % (HTTP_PROXY_PORT,
+    with open('3proxy.conf', 'wb') as out:
+        out.write(b'\n'.join((
+            b'allow *',
+            b'auth none',
+            b'proxy -a -n -p%d -e%s' % (HTTP_PROXY_PORT,
                                        PROXY_HOST_IP),
-            'socks -p%d -e%s' % (SOCKS4_PROXY_PORT,
+            b'socks -p%d -e%s' % (SOCKS4_PROXY_PORT,
                                  PROXY_HOST_IP),
-            'socks -p%d -e%s' % (SOCKS5_PROXY_PORT,
+            b'socks -p%d -e%s' % (SOCKS5_PROXY_PORT,
                                  PROXY_HOST_IP),
         )))
     cmd = 'test/bin/3proxy 3proxy.conf'

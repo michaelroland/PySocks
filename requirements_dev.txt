@@ -4,3 +4,4 @@ psutil
 pytest
 pylint
 flake8
+tornado==4.5.3

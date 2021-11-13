@@ -7,7 +7,7 @@ extension-pkg-whitelist=
 ignored-modules=
 
 [MESSAGES CONTROL]
-disable=R,I,fixme,missing-docstring
+disable=C,R,I,fixme,missing-docstring
 
 [REPORTS]
 reports=no
