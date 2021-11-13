@@ -1,9 +1,10 @@
 PySocks
 =======
 
-PySocks lets you send traffic through SOCKS proxy servers. It is a modern fork of [SocksiPy](http://socksipy.sourceforge.net/) with bug fixes and extra features.
+[Friendly fork](https://github.com/urllib3/PySocks/issues/1) of [PySocks](https://github.com/Anorov/PySocks) originally maintained by [Anorov](https://github.com/Anorov).
+PySocks is a modern fork of [SocksiPy](http://socksipy.sourceforge.net) with bug fixes and extra features.
 
-Acts as a drop-in replacement to the socket module. Seamlessly configure SOCKS proxies for any socket object by calling `socket_object.set_proxy()`.
+PySocks lets you send traffic through SOCKS proxy servers. Acts as a drop-in replacement to the socket module. Seamlessly configure SOCKS proxies for any socket object by calling `socket_object.set_proxy()`.
 
 ----------------
 
@@ -291,9 +292,3 @@ For example:
     >>> socks.set_default_proxy(socks.SOCKS5, "socks.example.com")
     >>> socket.socket = socks.socksocket
     >>> urllib.urlopen("http://www.sourceforge.net/")
-
-
-PROBLEMS
----------
-
-Please open a GitHub issue at https://github.com/Anorov/PySocks
